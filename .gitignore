@@ -1,6 +1,37 @@
-model/original/*
-model/finetune_checkpoint/*
+# ===========================
+# Model files
+# ===========================
+model/*
+!model/original/.gitkeep
 !model/finetune_checkpoint/.gitkeep
-!model/original/.gitkeep 
-torchtune
-wandb
+
+# ===========================
+# Data and checkpoints
+# ===========================
+data/*
+
+# ===========================
+# Logs, experiments, and runs
+# ===========================
+wandb/
+torchtune/
+
+# ===========================
+# Temporary and cache files
+# ===========================
+__pycache__/
+*.e*
+*.o*
+
+# ===========================
+# IDE and environment files
+# ===========================
+.vscode/
+.gradio/
+
+# ===========================
+# Scripts not tracked
+# ===========================
+chat_cli.py
+preprocess.py
+train_clone_llama.pbs

@@ -23,17 +23,17 @@ model:
 # Tokenizer
 tokenizer:
   _component_: torchtune.models.llama3.llama3_tokenizer
-  path: model/original/llama3/tokenizer.model
+  path: model/original/llama3-8B/tokenizer.model
 
 checkpointer:
   _component_: torchtune.utils.FullModelMetaCheckpointer
-  checkpoint_dir: model/original/llama3/
+  checkpoint_dir: model/original/llama3-8B/
   checkpoint_files: [
     consolidated.00.pth
   ]
-  adapter_checkpoint: ../finetune_checkpoint/adapter_0.pt
-  recipe_checkpoint: ../finetune_checkpoint/recipe_state.pt
-  output_dir: model/finetune_checkpoint
+  adapter_checkpoint: ../finetune_checkpoint_8B/adapter_0.pt
+  recipe_checkpoint: ../finetune_checkpoint_8B/recipe_state.pt
+  output_dir: model/finetune_checkpoint_8B
   model_type: LLAMA3
 resume_from_checkpoint: True
 
@@ -63,13 +63,13 @@ loss:
   _component_: torch.nn.CrossEntropyLoss
 
 # Training
-epochs: 2
+epochs: 10
 max_steps_per_epoch: null
 gradient_accumulation_steps: 32
 compile: False
 
 # Logging
-output_dir: /tmp/lora_finetune_output
+output_dir: /tmp/lora_finetune_output_8B
 metric_logger:
   _component_: torchtune.utils.metric_logging.DiskLogger
   log_dir: ${output_dir}
