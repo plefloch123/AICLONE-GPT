@@ -1,33 +1,59 @@
-# Create an AI clone of yourself from your WhatsApp chats (using Llama3)
+<h1 align="center">🤖 Train Your Digital Twin — Fine-Tune an AI Clone of Yourself</h1>
 
-## Coming Soon:
-* Hosted application: https://dollyai.app
+<p align="center">
+  <img src="imgs/readme_header_banner.png" alt="Create the AI CLONE banner" width="75%">
+</p>
 
-## What's new
-* Completely rewritten with Torchtune library
-* ~30% reduced vRAM usage
-* Much simpler codebase
-* Llama3 support
 
-## About
-This repository lets you create an AI chatbot clone of yourself, using your WhatsApp chats as training data. It builds upon the new **torchtune** library for finetuning and inference. 
+<p align="center">
+  <b> What if your WhatsApp messages could become the training ground for an AI that talks just like you? <br />
+  <b> This project fine-tune a large language model on your chat history to create your digital twin.</b>
+</p>
 
-It includes code to:
-* Preprocess exported WhatsApp chats into a suitable format for finetuning
-* Finetune a model on your WhatsApp chats, using (quantized) LoRa
-* Chat with your finetuned AI clone, via a commandline interface
+<p align="center">
+  <a href="https://pytorch.org/get-started/locally/"><img src="https://img.shields.io/badge/PyTorch-2.4+-ee4c2c?logo=pytorch&logoColor=white" alt="PyTorch"></a>
+  <a href="https://github.com/meta-llama/"><img src="https://img.shields.io/badge/Llama 3-Supported-blue?logo=meta" alt="Llama3"></a>
+  <a href="https://huggingface.co/meta-llama/Meta-Llama-3-8B-Instruct"><img src="https://img.shields.io/badge/Hugging Face-Compatible-yellow?logo=huggingface&logoColor=white" alt="Hugging Face"></a>
+  <a href="https://github.com/kinggongzilla/torchtune"><img src="https://img.shields.io/badge/Torchtune-Finetuning-lightgrey?logo=meta" alt="Torchtune"></a>
+</p>
 
-Currently supported models are:
-* Llama3-8B-Instruct
-* Mistral-7B-Instruct-v0.2
+## What This Project Does
 
-## Setup
-1. Clone this repository
-2. Ensure you have pytorch installed in your active environment. If not, follow these instructions: https://pytorch.org/get-started/locally/ 
-3. Install torchtune:
+This repository lets you fine-tune a conversational LLM (Llama 3 or Mistral 7B) on your own WhatsApp conversations.
+The goal? To create an AI clone that mirrors your tone, humour, quirks, and personality.
+
+### Core Components
+
+- **Chat preprocessing:** Transform WhatsApp `.txt` exports into structured, model-ready datasets.  
+- **QLoRA finetuning:** Efficiently fine-tune massive models on GPUs.  
+- **Conversational interface:** Talk to your digital twin directly from the terminal/Gradio.
+
+> 💭 *Think of it as ChatGPT — but it’s you.*
+
+**Supported base models**
+- [Meta-Llama-3-8B-Instruct](https://huggingface.co/meta-llama/Meta-Llama-3-8B-Instruct)  
+- [Mistral-7B-Instruct-v0.2](https://huggingface.co/mistralai/Mistral-7B-Instruct-v0.2)
+
+Both models can be fine-tuned using QLoRA adapters, drastically reducing memory usage while preserving performance.
+
+---
+
+## ⚙️ Getting Started
+
+### 1. Clone the repository
+```bash
+git clone https://github.com/plefloch123/AICLONE-GPT.git
+cd AICLONE-GPT
+```
+
+### 2. Install Dependencies
+
+Ensure you have **PyTorch ≥ 2.4** installed ([installation guide](https://pytorch.org/get-started/locally/)).
+
+Then install the **Torchtune** fine-tuning framework:
 
 ```bash
-git clone https://github.com/kinggongzilla/torchtune.git
+git clone https://github.com/plefloch123/torchtune.git
 cd torchtune
 pip install .
 cd ..

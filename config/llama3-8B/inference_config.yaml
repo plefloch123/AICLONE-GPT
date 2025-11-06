@@ -6,7 +6,7 @@ checkpointer:
   _component_: torchtune.utils.FullModelMetaCheckpointer
   checkpoint_dir: model/finetune_checkpoint_8B
   checkpoint_files: [
-    meta_model_9.pt,
+    meta_model_5.pt,
   ]
   output_dir: model/finetune_checkpoint_8B
   model_type: LLAMA3
