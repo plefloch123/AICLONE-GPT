@@ -34,3 +34,8 @@ __pycache__/
 chat_cli.py
 preprocess.py
 train_clone_llama.pbs
+
+# ===========================
+# config files
+# ===========================
+config/llama3-8B/*
