@@ -5,6 +5,12 @@ model/*
 !model/original/.gitkeep
 !model/finetune_checkpoint/.gitkeep
 
+
+# ===========================
+# config files
+# ===========================
+config/llama3-8B/inference_config.yaml
+
 # ===========================
 # Data and checkpoints
 # ===========================
@@ -34,8 +40,3 @@ __pycache__/
 chat_cli.py
 preprocess.py
 train_clone_llama.pbs
-
-# ===========================
-# config files
-# ===========================
-config/llama3-8B/*
