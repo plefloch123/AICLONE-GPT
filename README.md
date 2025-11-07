@@ -1,4 +1,7 @@
-<h1 align="center">🤖 Train Your Digital Twin — Fine-Tune an AI Clone of Yourself</h1>
+<h1 align="center">
+  <span style="font-size: 1.5em;">🤖 Train Your Digital Twin</span> <br />
+  <span style="font-size: 1em;">Fine-Tune an AI Clone of Yourself</span>
+</h1>
 
 <p align="center">
   <img src="imgs/readme_header_banner.png" alt="Create the AI CLONE banner" width="75%">
