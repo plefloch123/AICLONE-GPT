@@ -20,6 +20,16 @@
   <a href="https://github.com/kinggongzilla/torchtune"><img src="https://img.shields.io/badge/Torchtune-Finetuning-lightgrey?logo=meta" alt="Torchtune"></a>
 </p>
 
+<h1 align="center">🎬 Demo — Talk to Your Digital Twin</h1>
+
+<p align="center">
+  <img src="imgs/ChatwithAICLONE-GPT.gif" alt="AICLONE-GPT demo: chatting with your digital twin" width="80%" style="border-radius: 12px; box-shadow: 0 0 20px rgba(0,0,0,0.3);">
+</p>
+
+<p align="center">
+  <i>See your <b>AI clone</b> respond in your own tone, style, and humour — all locally and privately.</i>
+</p>
+
 ## What This Project Does
 
 This repository lets you fine-tune a conversational LLM (Llama 3 or Mistral 7B) on your own WhatsApp conversations.

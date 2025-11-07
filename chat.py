@@ -47,7 +47,7 @@ class ChatRecipe:
             model=self._model,
             prompt=model_input,
             max_generated_tokens=cfg.max_new_tokens,
-            temperature=temperature,  # 🔥 Dynamic temperature control
+            temperature=temperature,  # Dynamic temperature control
             top_k=cfg.top_k,
             stop_tokens=self._tokenizer.stop_tokens,
         )
@@ -67,7 +67,7 @@ class ChatRecipe:
         chat_history.append(Message(role="assistant", content=output))
         
         # Convert to list of tuples for Gradio
-        formatted_history = [(f"🧑‍💻 You: {m.content}", f"🤖 PierreGPT: {chat_history[i + 1].content}") for i, m in enumerate(chat_history[:-1]) if m.role == "user"]
+        formatted_history = [(f"🧑 You: {m.content}", f"🤖 AICLONE-GPT: {chat_history[i + 1].content}") for i, m in enumerate(chat_history[:-1]) if m.role == "user"]
 
         return formatted_history, chat_history
 
@@ -91,7 +91,7 @@ def main(cfg: DictConfig) -> None:
     # Launch Gradio Interface with a Sleek UI
     with gr.Blocks(css="footer {visibility: hidden}") as interface:
         gr.Markdown("""
-            <h1 style='text-align: center; color: #2E8B57;'>🤖 PierreGPT: Your AI Chat Companion</h1>
+            <h1 style='text-align: center; color: #2E8B57;'>🤖 AICLONE-GPT: Your AI Chat Companion</h1>
             <p style='text-align: center; font-size: 16px;'>Adjust temperature to control response randomness.</p>
         """)
 
