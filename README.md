@@ -42,7 +42,7 @@ Both models can be fine-tuned using QLoRA adapters, drastically reducing memory 
 
 ### 1. Clone the repository
 ```bash
-git clone https://github.com/plefloch123/AICLONE-GPT.git
+git clone --recurse-submodules git@github.com:plefloch123/AICLONE-GPT.git
 cd AICLONE-GPT
 ```
 
@@ -53,33 +53,39 @@ Ensure you have **PyTorch ≥ 2.4** installed ([installation guide](https://pyto
 Then install the **Torchtune** fine-tuning framework:
 
 ```bash
-git clone https://github.com/plefloch123/torchtune.git
 cd torchtune
 pip install .
 cd ..
 ```
+Note that slight modifications to the torchtune library ChatDataset class code were necessary, hence we're not installing from the official repo.
 
-Note that slight modifications to the torchtune library ChatDataset class code were necessary, hence we're not installing from the official repo. In particular the validate_messages function call is removed, to allow for message threads which are not strictly alternating between human and assistant roles.
-
-## Downloading the base model
-### Llama3
+### 3. Downloading the base model
+### 🔹 Llama3
 Run ```tune download meta-llama/Meta-Llama-3-8B-Instruct --output-dir model/llama3 --hf-token <HF_TOKEN>```. Replace <HF_TOKEN> with your hugging face access token. In order to download Llama3 you first need to request access on the Meta Llama3 Huggingface page.
 
-### Mistral 7B Instruct
+### 🔹 Mistral
 Run ```tune download mistralai/Mistral-7B-Instruct-v0.2 --output-dir model/mistral```. 
 
 If you downloaded the model in another format (e.g. safetensors), please adjust the checkpoint_files in ```mistral/qlora_train_config.yaml```.
+Adjust parameters like learning rate, epochs, and batch size inside the config file for better personalisation.
 
-## Obtaining and preprocessing your WhatsApp chats
+### 4. Obtaining and preprocessing your WhatsApp chats
 To prepare your WhatsApp chats for training, follow these steps:
 
-1. Export your WhatsApp chats as .txt files. This can be done directly in the WhatsApp app on your phone, for each chat individually. You can export just one .txt from a single chat or many .txt files from all your chats.
-Unfortunately, formatting seems to vary between regions. I am based on Europe, so the regex in the ```preprocess.py``` might have to be adjusted if you are based in a different region.
-2. Copy the .txt files you exported into ```data/raw_data```. 
-3. Run ```python preprocess.py "YOUR NAME"```. This will convert your raw chats into a sharegpt format suitable for training and saves the JSON files to ```data/preprocessed```. Replace ```YOUR NAME``` with the exact string which represents your name in the exportet WhatsApp .txt files. The script will assign you the "gpt" role and your conversation partners the "user" role.
+1. **Export your WhatsApp chats** as .txt files. 
+    - On your phone, open a chat → tap **⋮ → More → Export Chat → Without Media**.
+    - You can export one or multiple chats — each will produce its own `.txt` file.
+2.  **Move the exported files** to: ```data/unformatted_text```. 
+3.  **Preprocess your chats**
+Run the all-in-one preprocessing script:
+```bash
+python process_data.py "Your Name"
+```
+Replace ```"Your Name"``` with how your name appears in the chat exports.
 
+## 🧠 Fine-Tuning Your Model
 
-## Start finetune/training
+Once your chat data is ready, it’s time to fine-tune your model using QLoRA!
 
 ### Llama3
 Run ```tune run lora_finetune_single_device --config config/llama3/qlora_train_config.yaml```
@@ -87,10 +93,14 @@ Run ```tune run lora_finetune_single_device --config config/llama3/qlora_train_c
 ### Mistral
 Run ```tune run lora_finetune_single_device --config config/mistral/qlora_train_config.yaml```
 
+You can adjust hyperparameters like learning rate, batch size, and epochs directly inside the YAML config files.
 
-## Chatting with your AI clone
+## 🗣️ Chatting With Your AI Clone
+
+After training, you can start talking to your digital twin.
+
 ### Llama3
-Run ```tune run chat.py --config config/llama3/inference_config.yaml```
+Run ```python chat.py --config config/llama3/inference_config.yaml```
 
 You can define your own system prompt by changing the ```prompt``` string in the ```config/llama3/inference_config.py``` file.
 
@@ -102,18 +112,52 @@ For mistral to fit onto 24GB I first had to quantize the trained model.
 
 Running this command loads the finetuned model and let's you have a conversation with it in the commandline.
 
-## Hardware requirements
-Approx 16 GB vRAM required for QLoRa Llama3 finetune with 4k context length. I ran the finetune on a RTX 3090.
-When experimenting with other models, vRAM requirement might vary.
+## ⚙️ Hardware Requirements
+
+| GPU                | VRAM     | Notes                                                      |
+| ------------------ | -------- | ---------------------------------------------------------- |
+| RTX 4090 × 2       | 24 GB each | Used for all fine-tuning and inference in this project     |
+| RTX 3090           | 24 GB     | Fully supports Llama 3 fine-tuning                         |
+| RTX 4070 / 4080    | 16–20 GB  | Recommended with QLoRA for smaller models                  |
+| < 16 GB GPUs       | —         | Use quantization or reduce batch size and context length   |
 
 
-## FAQ
-1. **I trained my model but it did not learn my writing style**
-Try training for more than one epoch. You can change this in the ```qlora_train_config.yaml``` file.
-2. **The preprocessing script does not work**
-You probably need to adjust the regex pattern in ```preprocess.py```. The WhatsApp export format varies from region to region.
-3. **I want to train a clone of on group chats**
-The current setup does not support group chats. Hence do not export and save them into the ```data/raw_data``` directory. If you do want the model to simulate group chats, I think you have to adjust the preprocessing and ChatDataset of torchtune, such that they support more than 2 roles. I haven't tried this myself.
+## 💡 Tips & FAQ
+
+### 🧩 The model isn’t learning my tone!
+Try increasing the number of **epochs** in `config/llama3/qlora_train_config.yaml`.
+
+---
+
+### 📜 The preprocessing script fails.
+Adjust the **regex** pattern in `prepare_data.py` to match your region’s WhatsApp export format  
+(e.g., `DD/MM/YYYY` vs. `MM/DD/YYYY`).
+
+---
+
+### 👥 Can I include group chats?
+Currently **not supported**.  
+If you’d like to include them, you’ll need to modify the preprocessing logic to handle multi-user conversations.
+
+---
+
+### 🌍 My chats are not in English.
+Fine-tuning works best with **English-language** data.  
+If your chats are in another language, consider adjusting tokenization and training parameters for better results.
+But I tried in french and still works well.
+
+---
+
+## 🧪 Common Notes
+
+- After training, experiment with **temperature** and **top_k** in your `inference_config.yaml`:
+
+  | Parameter | Effect |
+  | ---------- | ------- |
+  | `temperature = 0.2` | Factual & consistent replies |
+  | `temperature ≥ 0.7` | More creative & expressive replies |
+
+- Longer chat histories help the model capture your full communication style.  
 
 ## Common Issues / Notes
 * After training, adjust temperature and top_k parameters in the ```inference_config.yaml``` file. I found a temperature of 0.2 and top_k of 10000 to work well for me. 

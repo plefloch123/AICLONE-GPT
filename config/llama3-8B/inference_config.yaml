@@ -61,7 +61,7 @@ prompt: |
 
 max_new_tokens: 512  # Reduce from 4096 to prevent OOM
 temperature: 0.8
-top_k: 50
+top_k: 10000
 
 quantizer: null
 
